@@ -190,9 +190,15 @@ def run_importanize_on_text(text, config, args):
         else:
             line = None
 
-    for i in config.get("add_imports", []):
-        for j in parse_statements([([i], [first_import_line_number])]):
-            groups.add_statement_to_group(j)
+    # continue when add_imports only future.absolute_import and
+    # file have no import statement.
+    add_imports = config.get("add_imports", [])
+    if add_imports == ["from __future__ import absolute_import"] and line is None:
+        pass
+    else:
+        for i in add_imports:
+            for j in parse_statements([([i], [first_import_line_number])]):
+                groups.add_statement_to_group(j)
 
     formatted_imports = groups.formatted(
         formatter=formatter,
