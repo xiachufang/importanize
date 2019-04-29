@@ -193,7 +193,10 @@ def run_importanize_on_text(text, config, args):
     # continue when add_imports only future.absolute_import and
     # file have no import statement.
     add_imports = config.get("add_imports", [])
-    if add_imports == ["from __future__ import absolute_import"] and not line_numbers:
+    if (
+        add_imports == ["from __future__ import absolute_import"]
+        and not line_numbers
+    ):
         pass
     else:
         for i in add_imports:
